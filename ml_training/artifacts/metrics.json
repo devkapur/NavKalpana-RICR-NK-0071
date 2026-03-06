@@ -1,0 +1,45 @@
+{
+  "best_base_model": "gradient_boosting",
+  "calibration_method": "sigmoid",
+  "base_model_metrics": {
+    "log_reg": {
+      "roc_auc": 0.7918721026445465,
+      "pr_auc": 0.7763011494511889,
+      "recall": 0.6814033086138049,
+      "precision": 0.7588945362134689
+    },
+    "random_forest": {
+      "roc_auc": 0.7778674390390046,
+      "pr_auc": 0.7657778599132303,
+      "recall": 0.7126354820308043,
+      "precision": 0.7227364767139138
+    },
+    "gradient_boosting": {
+      "roc_auc": 0.8031765440290275,
+      "pr_auc": 0.7871860308039706,
+      "recall": 0.706503137478608,
+      "precision": 0.7549527583053947
+    },
+    "mlp": {
+      "roc_auc": 0.7861433715233775,
+      "pr_auc": 0.7700726655730983,
+      "recall": 0.7000855675984028,
+      "precision": 0.7412048920428809
+    }
+  },
+  "final_calibrated_metrics": {
+    "roc_auc": 0.8031765440290275,
+    "pr_auc": 0.7871860308039706,
+    "recall": 0.7070735881346264,
+    "precision": 0.7548721071863581
+  },
+  "decision_threshold": 0.33080875849427155,
+  "threshold_target_recall": 0.85,
+  "target_recall_achieved": true,
+  "metrics_at_decision_threshold": {
+    "roc_auc": 0.8031765440290275,
+    "pr_auc": 0.7871860308039706,
+    "recall": 0.8501140901312036,
+    "precision": 0.6560642747083425
+  }
+}

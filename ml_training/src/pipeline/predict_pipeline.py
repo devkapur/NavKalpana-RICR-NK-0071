@@ -131,6 +131,56 @@ class PredictPipeline:
                 return f"{display_field}: {value}"
         return feature_name
 
+    @staticmethod
+    def _driver_reason(feature_label: str) -> str:
+        label = feature_label.lower()
+        if "systolic bp" in label:
+            return "Higher systolic blood pressure can increase cardiovascular stress."
+        if "diastolic bp" in label:
+            return "Diastolic pressure pattern contributes to long-term heart risk."
+        if "pulse pressure" in label:
+            return "Wider pulse pressure can indicate vascular strain."
+        if "age" in label:
+            return "Age-related factors increase baseline cardiovascular risk."
+        if "cholesterol" in label:
+            return "Cholesterol profile strongly influences artery health."
+        if "glucose" in label:
+            return "Glucose levels are linked to metabolic cardiovascular risk."
+        if "bmi" in label or "weight" in label:
+            return "Body composition can affect blood pressure and heart workload."
+        if "smoking" in label:
+            return "Smoking status has a direct association with heart risk."
+        if "physical activity" in label:
+            return "Lower physical activity can reduce cardiovascular resilience."
+        return "This factor contributed meaningfully to the model's risk estimate."
+
+    def _plain_explanation(
+        self,
+        risk_category: str,
+        probability: float,
+        drivers: List[Dict[str, object]],
+    ) -> Dict[str, object]:
+        if not drivers:
+            return {
+                "summary": f"Risk is classified as {risk_category} with probability {probability:.2f}.",
+                "main_factors": [],
+            }
+
+        top_labels = [str(driver.get("feature_label") or driver.get("feature")) for driver in drivers[:3]]
+        return {
+            "summary": (
+                f"Risk is classified as {risk_category} ({probability:.2f}). "
+                f"Main contributors were {', '.join(top_labels)}."
+            ),
+            "main_factors": [
+                {
+                    "label": str(driver.get("feature_label") or driver.get("feature")),
+                    "reason": str(driver.get("plain_reason", "This factor influenced the prediction.")),
+                }
+                for driver in drivers[:3]
+            ],
+        }
+
     def _local_shap_drivers(self, model: object, transformed_row, feature_names: List[str]) -> List[Dict[str, object]]:
         if shap is None or np is None:
             return []
@@ -165,6 +215,7 @@ class PredictPipeline:
                     "feature_label": self._friendly_feature_label(feature_names[int(idx)]),
                     "shap_contribution": float(row_values[int(idx)]),
                     "source": "local_prediction_shap",
+                    "plain_reason": self._driver_reason(self._friendly_feature_label(feature_names[int(idx)])),
                 }
                 for idx in top_indices
             ]
@@ -181,12 +232,14 @@ class PredictPipeline:
         global_top = shap_summary.get("top_features_by_mean_abs_shap", [])
         fallback = []
         for item in global_top[:3]:
+            feature = str(item.get("feature"))
             fallback.append(
                 {
-                    "feature": item.get("feature"),
-                    "feature_label": self._friendly_feature_label(str(item.get("feature"))),
+                    "feature": feature,
+                    "feature_label": self._friendly_feature_label(feature),
                     "mean_abs_shap": item.get("mean_abs_shap"),
                     "source": "global_shap_summary",
+                    "plain_reason": self._driver_reason(self._friendly_feature_label(feature)),
                 }
             )
         return fallback
@@ -213,6 +266,7 @@ class PredictPipeline:
             top_drivers = self._local_shap_drivers(model, transformed[0:1], feature_names)
             if not top_drivers:
                 top_drivers = self._global_shap_fallback()
+            plain_explanation = self._plain_explanation(risk_category, probability, top_drivers)
 
             return {
                 "risk_probability": probability,
@@ -221,6 +275,7 @@ class PredictPipeline:
                 "predicted_class": int(probability >= decision_threshold),
                 "confidence_intervals_95": confidence_intervals,
                 "top_shap_drivers": top_drivers,
+                "why_this_result": plain_explanation,
                 "recommendations": self._recommendations(risk_category),
             }
         except Exception as e:

@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 from functools import lru_cache
@@ -63,6 +64,36 @@ def get_predictor() -> PredictPipeline:
 @app.get("/")
 def root():
     return {"message": "backend is running"}
+
+
+@app.get("/explainability/summary")
+def explainability_summary():
+    predictor = get_predictor()
+    summary_path = predictor.config.shap_summary_path
+    if not os.path.exists(summary_path):
+        raise HTTPException(status_code=404, detail="SHAP summary not found. Run training pipeline first.")
+
+    with open(summary_path, "r", encoding="utf-8") as shap_file:
+        shap_summary = json.load(shap_file)
+
+    top_features = []
+    for item in shap_summary.get("top_features_by_mean_abs_shap", [])[:8]:
+        feature = str(item.get("feature"))
+        label = predictor._friendly_feature_label(feature)
+        top_features.append(
+            {
+                "feature": feature,
+                "feature_label": label,
+                "impact_score": item.get("mean_abs_shap"),
+                "plain_reason": predictor._driver_reason(label),
+            }
+        )
+
+    return {
+        "status": shap_summary.get("status", "unknown"),
+        "sample_size": shap_summary.get("sample_size"),
+        "top_features": top_features,
+    }
 
 
 def _build_auth_response(user: User) -> AuthResponse:

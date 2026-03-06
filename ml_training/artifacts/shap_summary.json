@@ -1,0 +1,133 @@
+{
+  "status": "ok",
+  "sample_size": 200,
+  "top_features_by_mean_abs_shap": [
+    {
+      "feature": "num__ap_hi",
+      "mean_abs_shap": 0.14966084432156662
+    },
+    {
+      "feature": "num__age_bp_interaction",
+      "mean_abs_shap": 0.05693052301257407
+    },
+    {
+      "feature": "cat__cholesterol_3",
+      "mean_abs_shap": 0.025804210952203324
+    },
+    {
+      "feature": "cat__cholesterol_1",
+      "mean_abs_shap": 0.02073217267209586
+    },
+    {
+      "feature": "num__ap_lo",
+      "mean_abs_shap": 0.016734971692226305
+    },
+    {
+      "feature": "num__age",
+      "mean_abs_shap": 0.013738010211028811
+    },
+    {
+      "feature": "num__bmi",
+      "mean_abs_shap": 0.009229556969408359
+    },
+    {
+      "feature": "num__weight",
+      "mean_abs_shap": 0.008731391789499521
+    },
+    {
+      "feature": "cat__active_1",
+      "mean_abs_shap": 0.005030479484753431
+    },
+    {
+      "feature": "num__glucose_bmi_interaction",
+      "mean_abs_shap": 0.004926157466875526
+    }
+  ],
+  "individual_explanations": [
+    {
+      "sample_index": 0,
+      "top_drivers": [
+        {
+          "feature": "num__ap_hi",
+          "shap_contribution": 0.2056898259048638
+        },
+        {
+          "feature": "num__age_bp_interaction",
+          "shap_contribution": 0.06366476135423582
+        },
+        {
+          "feature": "cat__cholesterol_1",
+          "shap_contribution": 0.02731497883209762
+        }
+      ]
+    },
+    {
+      "sample_index": 1,
+      "top_drivers": [
+        {
+          "feature": "num__ap_hi",
+          "shap_contribution": 0.23805806252536688
+        },
+        {
+          "feature": "num__age_bp_interaction",
+          "shap_contribution": 0.057555843884033044
+        },
+        {
+          "feature": "num__ap_lo",
+          "shap_contribution": 0.026341552218014555
+        }
+      ]
+    },
+    {
+      "sample_index": 2,
+      "top_drivers": [
+        {
+          "feature": "num__age_bp_interaction",
+          "shap_contribution": 0.07227968221715465
+        },
+        {
+          "feature": "num__age",
+          "shap_contribution": 0.04253850250046695
+        },
+        {
+          "feature": "num__bmi",
+          "shap_contribution": 0.02205923010588255
+        }
+      ]
+    },
+    {
+      "sample_index": 3,
+      "top_drivers": [
+        {
+          "feature": "num__ap_hi",
+          "shap_contribution": -0.13709116723744133
+        },
+        {
+          "feature": "num__bmi",
+          "shap_contribution": 0.039303899544154634
+        },
+        {
+          "feature": "cat__cholesterol_1",
+          "shap_contribution": -0.020840528770844104
+        }
+      ]
+    },
+    {
+      "sample_index": 4,
+      "top_drivers": [
+        {
+          "feature": "num__ap_hi",
+          "shap_contribution": -0.1621576159980603
+        },
+        {
+          "feature": "num__age_bp_interaction",
+          "shap_contribution": -0.060214993287611485
+        },
+        {
+          "feature": "cat__cholesterol_3",
+          "shap_contribution": -0.02270988138163806
+        }
+      ]
+    }
+  ]
+}

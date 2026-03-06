@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 from dataclasses import dataclass
@@ -18,6 +19,7 @@ from src.utils import save_object
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path: str = os.path.join("artifacts", "preprocessor.pkl")
+    feature_names_file_path: str = os.path.join("artifacts", "feature_names.json")
 
 
 class DataTransformation:
@@ -128,10 +130,10 @@ class DataTransformation:
 
             target_column_name = "cardio"
 
-            input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            input_feature_train_df = train_df.drop(columns=[target_column_name])
             target_feature_train_df = train_df[target_column_name]
 
-            input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            input_feature_test_df = test_df.drop(columns=[target_column_name])
             target_feature_test_df = test_df[target_column_name]
 
             preprocessing_obj = self.get_data_transformer_object()
@@ -150,8 +152,16 @@ class DataTransformation:
                 file_path=self.data_transformation_config.preprocessor_obj_file_path,
                 obj=preprocessing_obj,
             )
+            feature_names = [str(name) for name in preprocessing_obj.get_feature_names_out()]
+            os.makedirs(os.path.dirname(self.data_transformation_config.feature_names_file_path), exist_ok=True)
+            with open(
+                self.data_transformation_config.feature_names_file_path,
+                "w",
+                encoding="utf-8",
+            ) as feature_file:
+                json.dump(feature_names, feature_file, indent=2)
 
-            logging.info("Data transformation completed and preprocessor saved.")
+            logging.info("Data transformation completed and preprocessor + feature names saved.")
             return (
                 train_arr,
                 test_arr,

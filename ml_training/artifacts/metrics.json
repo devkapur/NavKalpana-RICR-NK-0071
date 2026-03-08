@@ -4,42 +4,133 @@
   "base_model_metrics": {
     "log_reg": {
       "roc_auc": 0.7918721026445465,
-      "pr_auc": 0.7763011494511889,
+      "pr_auc": 0.7763011494511888,
       "recall": 0.6814033086138049,
-      "precision": 0.7588945362134689
+      "precision": 0.7588945362134689,
+      "accuracy": 0.732
     },
     "random_forest": {
       "roc_auc": 0.7778674390390046,
       "pr_auc": 0.7657778599132303,
       "recall": 0.7126354820308043,
-      "precision": 0.7227364767139138
+      "precision": 0.7227364767139138,
+      "accuracy": 0.7191428571428572
     },
     "gradient_boosting": {
       "roc_auc": 0.8031765440290275,
-      "pr_auc": 0.7871860308039706,
+      "pr_auc": 0.7871860308039704,
       "recall": 0.706503137478608,
-      "precision": 0.7549527583053947
+      "precision": 0.7549527583053947,
+      "accuracy": 0.7381428571428571
     },
-    "mlp": {
+    "neural_network": {
       "roc_auc": 0.7861433715233775,
       "pr_auc": 0.7700726655730983,
       "recall": 0.7000855675984028,
-      "precision": 0.7412048920428809
+      "precision": 0.7412048920428809,
+      "accuracy": 0.7273571428571428
+    },
+    "xgboost": {
+      "roc_auc": 0.8028386246686112,
+      "pr_auc": 0.7873103168317168,
+      "recall": 0.7033656588705077,
+      "precision": 0.7588859824588399,
+      "accuracy": 0.7395
+    },
+    "lightgbm": {
+      "roc_auc": 0.8024018886912647,
+      "pr_auc": 0.7858820715434418,
+      "recall": 0.7027952082144895,
+      "precision": 0.7593220338983051,
+      "accuracy": 0.7395714285714285
+    },
+    "ensemble": {
+      "roc_auc": 0.8016419680906817,
+      "pr_auc": 0.7876586673713706,
+      "recall": 0.7027952082144895,
+      "precision": 0.7554806070826307,
+      "accuracy": 0.7372142857142857
     }
   },
   "final_calibrated_metrics": {
     "roc_auc": 0.8031765440290275,
-    "pr_auc": 0.7871860308039706,
+    "pr_auc": 0.7871860308039704,
     "recall": 0.7070735881346264,
-    "precision": 0.7548721071863581
+    "precision": 0.7548721071863581,
+    "accuracy": 0.7382857142857143
   },
   "decision_threshold": 0.33080875849427155,
-  "threshold_target_recall": 0.85,
-  "target_recall_achieved": true,
+  "threshold_policy": {
+    "target_recall": 0.85,
+    "precision_floor": 0.6,
+    "selected_policy": "max_precision_subject_to_recall_and_precision_floor",
+    "target_recall_achieved": true,
+    "target_precision_floor_achieved": true
+  },
   "metrics_at_decision_threshold": {
     "roc_auc": 0.8031765440290275,
-    "pr_auc": 0.7871860308039706,
+    "pr_auc": 0.7871860308039704,
     "recall": 0.8501140901312036,
-    "precision": 0.6560642747083425
-  }
+    "precision": 0.6560642747083425,
+    "accuracy": 0.7017142857142857
+  },
+  "confidence_intervals_95": {
+    "roc_auc": {
+      "lower": 0.7962876990962242,
+      "upper": 0.8103255314328759,
+      "median": 0.8034636815491788
+    },
+    "pr_auc": {
+      "lower": 0.7768977043360962,
+      "upper": 0.7976014843413023,
+      "median": 0.7878145101325009
+    },
+    "recall_at_decision_threshold": {
+      "lower": 0.84175724835871,
+      "upper": 0.8588266487139524,
+      "median": 0.8500395287528306
+    },
+    "precision_at_decision_threshold": {
+      "lower": 0.6476733189115332,
+      "upper": 0.6660088712045488,
+      "median": 0.6565912669752623
+    }
+  },
+  "shap_summary_path": "artifacts\\shap_summary.json",
+  "required_models": {
+    "xgboost_available": true,
+    "lightgbm_available": true,
+    "neural_network_available": true,
+    "ensemble_available": true
+  },
+  "features_used_for_training": [
+    "num__age",
+    "num__age_years",
+    "num__height",
+    "num__weight",
+    "num__ap_hi",
+    "num__ap_lo",
+    "num__bmi",
+    "num__pulse_pressure",
+    "num__age_bp_interaction",
+    "num__glucose_bmi_interaction",
+    "cat__gender_1",
+    "cat__gender_2",
+    "cat__cholesterol_1",
+    "cat__cholesterol_2",
+    "cat__cholesterol_3",
+    "cat__gluc_1",
+    "cat__gluc_2",
+    "cat__gluc_3",
+    "cat__smoke_0",
+    "cat__smoke_1",
+    "cat__alco_0",
+    "cat__alco_1",
+    "cat__active_0",
+    "cat__active_1",
+    "cat__bmi_risk_cat_normal",
+    "cat__bmi_risk_cat_obese",
+    "cat__bmi_risk_cat_overweight",
+    "cat__bmi_risk_cat_underweight"
+  ]
 }
